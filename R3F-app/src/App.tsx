@@ -1,11 +1,8 @@
 import './App.css'
 import { Scene } from './Scene'
-import { Canvas, type RootState } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 
 function App() {
-  const onCreated = (state: RootState) => {
-    console.log(state)
-  }
 
   return (
     <div className='canvas-container'>
