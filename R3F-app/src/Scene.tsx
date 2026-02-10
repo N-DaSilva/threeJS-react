@@ -1,20 +1,29 @@
-import { Html, OrbitControls, useHelper } from "@react-three/drei"
+import { OrbitControls } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 import { useRef } from 'react';
 import * as THREE from 'three';
 
+import { planetGeometry } from "./assets/PlanetGeometry.ts";
+import PlanetObject from "./assets/Planet.tsx"
+import { orbitGeometry, orbitMaterial } from "./assets/OrbitGeometry.ts";
+
 export function Scene() {
-    const directionalLightRef = useRef<THREE.DirectionalLightHelper>(null!);
 
-    const boxRef = useRef<THREE.Mesh>(null);
-
-    useHelper(directionalLightRef, THREE.DirectionalLightHelper);
+    const orbitRef1 = useRef<THREE.Mesh>(null);
+    const orbitRef2 = useRef<THREE.Mesh>(null);
+    const orbitRef3 = useRef<THREE.Mesh>(null);
 
     useFrame((state, delta) => {
-        if(boxRef.current){
-            boxRef.current.rotation.y += delta;
+        if(orbitRef1.current){
+            orbitRef1.current.rotation.y += delta *0.3;
+        }
+        if(orbitRef2.current){
+            orbitRef2.current.rotation.y += delta *0.1;
+        }
+        if(orbitRef3.current){
+            orbitRef3.current.rotation.y += delta *0.05;
         }
     })
 
@@ -25,64 +34,30 @@ export function Scene() {
         }
     })
 
-    const { color, position, rotation, wireframe } = useControls('Cube', {
-        color: {
-            label : 'Cube color',
-            value : '#ffffff'
-        },
-        position: {
-            label : 'Position',
-            value : {x:0, y:0, z:0},
-            step : 0.1
-        },
-        rotation: {
-            label : 'Rotation',
-            value: {x:0, y:0, z:0},
-            step : 0.1
-        },
-        wireframe: {
-            label : 'Show wireframe',
-            value : false
-        }
-    })
-
     return (
         <>
-            {showPerf &&
+        {showPerf &&
                 <Perf position="top-left" />}
-
             <OrbitControls />
-            <ambientLight intensity={1} />
-            <directionalLight ref={directionalLightRef} color="#ff1111" intensity={3} position={[0,5,-3]} />
 
-            <mesh position={[-2, 2, 0]} rotation={[0.5, 0, 0]} ref={boxRef}>
-                <boxGeometry />
-                <meshStandardMaterial color="#ff00cd" />
+            <mesh position={[0, 0, 0]} rotation={[0, 0, 0]} geometry={planetGeometry} scale={[1.5, 1.5, 1.5]}>
+                <meshBasicMaterial color="#ffcc00" />
             </mesh>
 
-            <mesh position={[3, -1, -3]} rotation={[1, 0, 6]}>
-                <torusKnotGeometry />
-                <meshNormalMaterial />
-            </mesh>
+            <group ref={orbitRef1}>
+                <PlanetObject position={[2,0,2]} scale={[0.25,0.25,0.25]} />
+                <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[2.9,2.9,2.9]}></mesh>
+            </group>
 
-            <mesh position={[position.x, position.y, position.z]} rotation={[rotation.x, rotation.y, rotation.z]}>
-                <boxGeometry />
-                <meshStandardMaterial color={color} wireframe={wireframe} />
-            </mesh>
+            <group ref={orbitRef2} rotation={[0.2,0,0]}>
+                <PlanetObject position={[3.25,0,-3.25]} scale={[0.5,0.5,0.5]} />
+                <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[4.75,4.75,4.75]}></mesh>
+            </group>
 
-            <mesh position={[0.5, 1, 0]}>
-                <boxGeometry />
-                <meshStandardMaterial color="orange" />
-            </mesh>
-
-            <mesh position={[1, 2, 0]}>
-                <boxGeometry />
-                <meshStandardMaterial color="yellow" />
-            </mesh>
-            
-            <Html position={[2,2,2]}>
-                <p>Hello</p>
-            </Html>
+            <group ref={orbitRef3} rotation={[0.1,0,0]}>
+                <PlanetObject position={[-0.75,0,6.75]} scale={[1,1,1]} />
+                <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[6.75,6.75,6.75]}></mesh>
+            </group>
         </>
     )
 }
