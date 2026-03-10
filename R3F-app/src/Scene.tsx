@@ -13,18 +13,15 @@ import Title from "./assets/Title.tsx";
 
 export function Scene() {
 
-    const orbitRef1 = useRef<THREE.Mesh>(null);
-    const orbitRef2 = useRef<THREE.Mesh>(null);
-    const orbitRef3 = useRef<THREE.Mesh>(null);
+    const orbitRefs = useRef<THREE.Group[]>([]);
 
     useFrame((state, delta) => {
-        if (!orbitRef1.current || !orbitRef2.current || !orbitRef3.current){
+        if (!orbitRefs.current){
             return;
         }
-        orbitRef1.current.rotation.y += delta *0.3;
-        orbitRef2.current.rotation.y += delta *0.1;
-        orbitRef3.current.rotation.y += delta *0.05;
-
+        orbitRefs.current[0].rotation.y += delta *0.3;
+        orbitRefs.current[1].rotation.y += delta *0.1;
+        orbitRefs.current[2].rotation.y += delta *0.05;
     })
 
     const { showPerf } = useControls('Debug', {
@@ -45,22 +42,22 @@ export function Scene() {
                 <meshBasicMaterial color="#ffcc00" />
             </mesh>
 
-            <group ref={orbitRef1}>
-                <PlanetObject position={[2,0,2]} scale={[0.25,0.25,0.25]} />
+            <group ref={(ref) => orbitRefs.current[0] = ref!}>
+                <PlanetObject position={[2,0,2]} scale={[0.25,0.25,0.25]} note="C" />
                 <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[2.9,2.9,2.9]}></mesh>
             </group>
 
-            <group ref={orbitRef2} rotation={[0.2,0,0]}>
-                <PlanetObject position={[3.25,0,-3.25]} scale={[0.5,0.5,0.5]} />
+            <group ref={(ref) => orbitRefs.current[1] = ref!} rotation={[0.2,0,0]}>
+                <PlanetObject position={[3.25,0,-3.25]} scale={[0.5,0.5,0.5]} note="G"/>
                 <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[4.75,4.75,4.75]}></mesh>
             </group>
 
-            <group ref={orbitRef3} rotation={[0.1,0,0]}>
-                <PlanetObject position={[-0.75,0,6.75]} scale={[1,1,1]} />
+            <group ref={(ref) => orbitRefs.current[2] = ref!} rotation={[0.1,0,0]}>
+                <PlanetObject position={[-0.75,0,6.75]} scale={[1,1,1]} note="E"/>
                 <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[6.75,6.75,6.75]}></mesh>
             </group>
 
-            <Title position={[0,-4.25,15.5]} rotation={[0.86,3.13,0]} scale={[10,10,10]} />
+            <Title position={[0,-5,15.5]} rotation={[0.75,Math.PI ,0]} scale={[8,20,15]} />
         </>
     )
 }

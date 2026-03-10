@@ -11,6 +11,6 @@ export function BackgroundMusic () {
     }
 
     return (
-        <audio ref={audioRef} autoPlay loop src="/src/assets/background-music.mp3"></audio>
+        <audio ref={audioRef} autoPlay loop src="/src/assets/sounds/background-music.mp3"></audio>
     )
 }
