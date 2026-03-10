@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei"
+import { OrbitControls} from "@react-three/drei"
 import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
 import { Perf } from "r3f-perf";
@@ -8,6 +8,8 @@ import * as THREE from 'three';
 import { planetGeometry } from "./assets/PlanetGeometry.ts";
 import PlanetObject from "./assets/Planet.tsx"
 import { orbitGeometry, orbitMaterial } from "./assets/OrbitGeometry.ts";
+import Title from "./assets/Title.tsx";
+
 
 export function Scene() {
 
@@ -16,15 +18,13 @@ export function Scene() {
     const orbitRef3 = useRef<THREE.Mesh>(null);
 
     useFrame((state, delta) => {
-        if(orbitRef1.current){
-            orbitRef1.current.rotation.y += delta *0.3;
+        if (!orbitRef1.current || !orbitRef2.current || !orbitRef3.current){
+            return;
         }
-        if(orbitRef2.current){
-            orbitRef2.current.rotation.y += delta *0.1;
-        }
-        if(orbitRef3.current){
-            orbitRef3.current.rotation.y += delta *0.05;
-        }
+        orbitRef1.current.rotation.y += delta *0.3;
+        orbitRef2.current.rotation.y += delta *0.1;
+        orbitRef3.current.rotation.y += delta *0.05;
+
     })
 
     const { showPerf } = useControls('Debug', {
@@ -34,11 +34,12 @@ export function Scene() {
         }
     })
 
+
     return (
         <>
         {showPerf &&
                 <Perf position="top-left" />}
-            <OrbitControls />
+            <OrbitControls enablePan={false} />
 
             <mesh position={[0, 0, 0]} rotation={[0, 0, 0]} geometry={planetGeometry} scale={[1.5, 1.5, 1.5]}>
                 <meshBasicMaterial color="#ffcc00" />
@@ -58,6 +59,8 @@ export function Scene() {
                 <PlanetObject position={[-0.75,0,6.75]} scale={[1,1,1]} />
                 <mesh rotation={[Math.PI / 2,0,0]} geometry={orbitGeometry} material={orbitMaterial} scale={[6.75,6.75,6.75]}></mesh>
             </group>
+
+            <Title position={[0,-4.25,15.5]} rotation={[0.86,3.13,0]} scale={[10,10,10]} />
         </>
     )
 }

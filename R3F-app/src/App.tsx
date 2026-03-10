@@ -1,11 +1,14 @@
 import './App.css'
 import { Scene } from './Scene'
 import { Canvas } from '@react-three/fiber'
+import { BackgroundMusic } from './assets/BackgroundMusic'
 
 function App() {
 
   return (
     <div className='canvas-container'>
+      <BackgroundMusic />
+
       <Canvas
       camera={{
         fov: 75,
