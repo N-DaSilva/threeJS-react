@@ -1,14 +1,24 @@
 import './App.css'
 import { Scene } from './Scene'
 import { Canvas } from '@react-three/fiber'
-import { BackgroundMusic } from './assets/BackgroundMusic'
+import BackgroundMusic from './assets/BackgroundMusic'
+import Settings from './assets/Settings'
+import { useEffect, useState } from 'react'
 
 function App() {
 
-  return (
-    <div className='canvas-container'>
-      <BackgroundMusic />
+  const [bgVolume, setBGvolume] = useState(5);
 
+  useEffect(()=>{
+    console.log(bgVolume);
+  },[bgVolume]);
+
+  return (
+    <>
+    <BackgroundMusic bgVolume={bgVolume} />
+
+    <div className='canvas-container'>
+      <Settings setBGvolume={setBGvolume} />
       <Canvas
       camera={{
         fov: 75,
@@ -20,6 +30,8 @@ function App() {
         <Scene />
       </Canvas>
     </div>
+    </>
+    
   )
 }
 

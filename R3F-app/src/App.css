@@ -7,8 +7,14 @@
   background-color: rgb(0, 0, 0);
 }
 
-h1 {
+form {
+  max-width: fit-content;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+label {
   color: white;
-  width: 100%;
-  text-align: center;
 }
