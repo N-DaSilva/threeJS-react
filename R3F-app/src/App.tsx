@@ -3,22 +3,19 @@ import { Scene } from './Scene'
 import { Canvas } from '@react-three/fiber'
 import BackgroundMusic from './assets/BackgroundMusic'
 import Settings from './assets/Settings'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 function App() {
 
+  //useState to handle volume change since backgroundMusic and settings are both direct children of App. Passed the set function as prop to settings so it could change the value dynamically, and volume number to background music
   const [bgVolume, setBGvolume] = useState(5);
-
-  useEffect(()=>{
-    console.log(bgVolume);
-  },[bgVolume]);
 
   return (
     <>
     <BackgroundMusic bgVolume={bgVolume} />
+    <Settings setBGvolume={setBGvolume} />
 
     <div className='canvas-container'>
-      <Settings setBGvolume={setBGvolume} />
       <Canvas
       camera={{
         fov: 75,

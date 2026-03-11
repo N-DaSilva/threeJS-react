@@ -1,11 +1,13 @@
 import { Text } from "@react-three/drei";
 
 
-export default function Title({ position, rotation, scale }: { position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] }) {
-
+export default function Title() {
+    //used Text component from drei to display 2D text in 3D space without it constantly facing the camera unlike R3F Html component
+    //I wanted to add a specific font but couldn't get it to work...
+    
     return (
         <>
-            <Text color="white" anchorX="center" anchorY="middle" position={position} rotation={rotation} scale={scale}>
+            <Text color="white" anchorX="center" anchorY="middle" position={[0,-5,15.5]} rotation={[0.75,Math.PI ,0]} scale={[8,20,15]}>
                 Cosmic Harmony
             </Text>
 
